@@ -4,26 +4,19 @@ import { capitalize} from '../utilities';
 import PeriodButton from './PeriodButton';
 
 
+
+interface Period {
+  period: string;
+  isSelected: boolean;
+}
+
 interface PeriodPanelProps {
- spendingPeriod: string;
+ periods: Period[];
  handlePeriodClick: (period: string) => void; 
 }
 
-const PeriodPanel: React.FC<PeriodPanelProps> = ({spendingPeriod}) => {
-  const [ periods, setPeriods ] = useState([
-    { period: 'week', isSelected: true },
-    { period: 'month', isSelected: false },
-    { period: 'year', isSelected: false }
-  ])
-
-  // Move the function to page.tsx
-  const handlePeriodClick = (periodParam: string) => {
-    setPeriods(prevState => {
-      return prevState.map((value) => {
-        return value.period === periodParam ? {...value, isSelected: true} : {...value, isSelected: false}
-      })
-    })
-  }
+const PeriodPanel: React.FC<PeriodPanelProps> = ({periods, handlePeriodClick}) => {
+  
 
   return (
     <div className="bg-secondary text-sm flex justify-evenly py-2 rounded-3xl">

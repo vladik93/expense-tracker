@@ -1,20 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PeriodPanel from './components/PeriodPanel';
 
 
 export default function Home() {
-  const [ spendingPeriod, setSpendingPeriod ] = useState('week');
+  const [ periods, setPeriods ] = useState([
+    { period: 'week', isSelected: true },
+    { period: 'month', isSelected: false },
+    { period: 'year', isSelected: false }
+  ]);
 
-  const handlePeriodClick = (period: string) => {
-    setSpendingPeriod(period);
+
+  useEffect(() => {
+    console.log(periods);
+  }, [periods]);
+
+
+  // Move the function to page.tsx
+  const handlePeriodClick = (periodParam: string) => {
+    setPeriods(prevState => {
+      return prevState.map((value) => {
+        return value.period === periodParam ? {...value, isSelected: true} : {...value, isSelected: false}
+      })
+    })
   }
+
+  // const handlePeriodClick = (period: string) => {
+  //   setSpendingPeriod(period);
+  // }
 
   return (
     <>
-      <PeriodPanel handlePeriodClick={handlePeriodClick} spendingPeriod={spendingPeriod} />
+      <PeriodPanel handlePeriodClick={handlePeriodClick} periods={periods} />
     </>
   );
 }
