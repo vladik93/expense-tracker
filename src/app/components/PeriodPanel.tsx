@@ -19,7 +19,7 @@ const PeriodPanel: React.FC<PeriodPanelProps> = ({periods, handlePeriodClick}) =
   
 
   return (
-    <div className="bg-secondary text-sm flex justify-evenly py-2 rounded-3xl">
+    <div className="bg-secondary text-sm flex justify-evenly py-2 mb-6 rounded-3xl">
      {/* <button className={`px-6 py-1 bg-transparent rounded-3xl`} onClick={() => onPeriodClick('week')}>Week</button>
      <button className={`px-6 py-1 bg-accent rounded-3xl`} onClick={() => onPeriodClick('month')}>Month</button>
      <button className={`px-6 py-1 bg-transparent rounded-3xl`} onClick={() => onPeriodClick('year')}>Year</button> */}

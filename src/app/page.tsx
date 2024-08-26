@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import PeriodPanel from './components/PeriodPanel';
+import SpendingChart from './components/SpendingChart';
 
 
 export default function Home() {
@@ -34,6 +35,7 @@ export default function Home() {
   return (
     <>
       <PeriodPanel handlePeriodClick={handlePeriodClick} periods={periods} />
+      <SpendingChart />
     </>
   );
 }
