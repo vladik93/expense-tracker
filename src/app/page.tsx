@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 
 import PeriodPanel from './components/PeriodPanel';
 import SpendingChart from './components/SpendingChart';
+import GoalPanel from './components/GoalPanel';
+import TransactionPanel from './components/TransactionPanel';
 
 
 export default function Home() {
@@ -36,6 +38,8 @@ export default function Home() {
     <>
       <PeriodPanel handlePeriodClick={handlePeriodClick} periods={periods} />
       <SpendingChart />
+      <GoalPanel />
+      <TransactionPanel />
     </>
   );
 }

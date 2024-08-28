@@ -3,7 +3,7 @@ import Profile from './Profile';
 
 export default function Header() {
   return (
-    <header className="h-14 border-b-[1px] border-secondary flex items-center p-2 justify-between">
+    <header className="h-14 border-b-[1px] border-secondary-bg flex items-center p-2 justify-between">
       <Profile />
       <button>
         <img src="icons/bell.svg" />
