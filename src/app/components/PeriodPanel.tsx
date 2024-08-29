@@ -5,28 +5,26 @@ import PeriodButton from './PeriodButton';
 
 
 
-interface Period {
-  period: string;
-  isSelected: boolean;
-}
+
 
 interface PeriodPanelProps {
- periods: Period[];
+ filter: string;
  handlePeriodClick: (period: string) => void; 
 }
 
-const PeriodPanel: React.FC<PeriodPanelProps> = ({periods, handlePeriodClick}) => {
-  
+const PeriodPanel: React.FC<PeriodPanelProps> = ({filter, handlePeriodClick}) => {
+  const [ periods, setPeriods ] = useState(['week','month','year']);
 
   return (
     <div className="bg-secondary-bg text-sm flex justify-evenly py-2 mb-6 rounded-3xl">
-     {/* <button className={`px-6 py-1 bg-transparent rounded-3xl`} onClick={() => onPeriodClick('week')}>Week</button>
-     <button className={`px-6 py-1 bg-accent rounded-3xl`} onClick={() => onPeriodClick('month')}>Month</button>
-     <button className={`px-6 py-1 bg-transparent rounded-3xl`} onClick={() => onPeriodClick('year')}>Year</button> */}
+      {periods.map((period) => {
+        return period === filter ? 
+        <PeriodButton period={period} isSelected={true} handlePeriodClick={handlePeriodClick} />
+        : 
+        <PeriodButton period={period} isSelected={false} handlePeriodClick={handlePeriodClick} />
+      })}
 
-    {periods.map(({period, isSelected}) => {
-      return <PeriodButton period={period} isSelected={isSelected} handlePeriodClick={handlePeriodClick} />
-    })}
+
 
     </div>
   )

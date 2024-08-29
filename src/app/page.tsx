@@ -2,42 +2,89 @@
 
 import React, { useState, useEffect } from 'react';
 
+import { expenses } from './data';
+
 import PeriodPanel from './components/PeriodPanel';
 import SpendingChart from './components/SpendingChart';
 import GoalPanel from './components/GoalPanel';
 import TransactionPanel from './components/TransactionPanel';
 
+interface Expense {
+  id: number;
+  userId: number;
+  description: string;
+  categoryId: number;
+  amount: number;
+  date: string;
+}
 
 export default function Home() {
-  const [ periods, setPeriods ] = useState([
-    { period: 'week', isSelected: true },
-    { period: 'month', isSelected: false },
-    { period: 'year', isSelected: false }
-  ]);
+  const [ filter, setFilter ] = useState('week');
+
+  const [ filteredExpenses, setFilteredExpenses ] = useState<Expense[]>([]);
+  
 
 
-  useEffect(() => {
-    console.log(periods);
-  }, [periods]);
-
-
-  // Move the function to page.tsx
   const handlePeriodClick = (periodParam: string) => {
-    setPeriods(prevState => {
-      return prevState.map((value) => {
-        return value.period === periodParam ? {...value, isSelected: true} : {...value, isSelected: false}
-      })
-    })
+    setFilter(periodParam);
   }
 
-  // const handlePeriodClick = (period: string) => {
-  //   setSpendingPeriod(period);
-  // }
+  useEffect(() => {
+    const now = new Date();
+    let filtered;
+
+    switch(filter) {
+      case 'week' : {
+        filtered = expenses.filter(val => {
+          let currentDate = new Date();
+          let expenseDate = new Date(val.date);
+
+          let oneWeekAgo = new Date(currentDate);
+          oneWeekAgo.setDate(currentDate.getDate() - 7);
+
+          return expenseDate >= oneWeekAgo && expenseDate <= currentDate
+        })
+        setFilteredExpenses(filtered);
+      }
+
+      break;
+      
+      case 'month': {
+        filtered = expenses.filter(val => {
+          let currentMonth = new Date().getMonth();
+          let currentYear = new Date().getFullYear();
+
+          let expenseMonth = new Date(val.date).getMonth();
+          let expenseYear = new Date(val.date).getFullYear();
+
+          return expenseMonth === currentMonth && expenseYear === currentYear;
+
+        })
+
+        setFilteredExpenses(filtered);
+      }
+
+      break;
+
+      case 'year' : {
+        filtered = expenses.filter(val => {
+          let currentYear = new Date().getFullYear();
+          let expenseYear = new Date(val.date).getFullYear();
+
+          return expenseYear === currentYear;
+        })
+
+        setFilteredExpenses(filtered);
+      }
+
+      break;
+    }
+  }, [filter]);
 
   return (
     <>
-      <PeriodPanel handlePeriodClick={handlePeriodClick} periods={periods} />
-      <SpendingChart />
+      <PeriodPanel handlePeriodClick={handlePeriodClick} filter={filter} />
+      <SpendingChart period={filter} filteredExpenses={filteredExpenses} />
       <GoalPanel />
       <TransactionPanel />
     </>

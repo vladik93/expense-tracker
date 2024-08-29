@@ -36,7 +36,15 @@ const  expenses =  [
       description: "Netflix Subscription",
       categoryId: 3,
       amount: 50, 
-      date: "2024-08-15"
+      date: "2024-07-15"
+    },
+    {
+      id: 3,
+      userId: 2, 
+      description: "Netflix Subscription",
+      categoryId: 3,
+      amount: 150, 
+      date: "2024-07-15"
     }
     
   ]
