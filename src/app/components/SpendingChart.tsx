@@ -16,7 +16,7 @@ interface SpendingChartProps {
 }
 
 interface ExpenseTotalsByCategory {
-  [key: number]: number;
+  [key: string]: number;
 }
 
 
@@ -35,10 +35,6 @@ const SpendingChart: React.FC<SpendingChartProps> = ({period, filteredExpenses})
 
 
   useEffect(() => {
-    console.log(expensesByCategory)
-  }, expensesByCategory)
-
-  useEffect(() => {
     let total = filteredExpenses.reduce((acc, expense) => {
       return acc + expense.amount
     }, 0);
@@ -48,18 +44,33 @@ const SpendingChart: React.FC<SpendingChartProps> = ({period, filteredExpenses})
 
   }, [filteredExpenses]);
 
-  useEffect(() => {
-    let expensesByCategory = filteredExpenses.reduce<ExpenseTotalsByCategory>((acc, expense) => {
-    
-      if(!acc[expense.categoryId]) {
-        acc[expense.categoryId] = 0;
-      } 
+  
+  const totalAmountByCategory = filteredExpenses.reduce<ExpenseTotalsByCategory>((acc, expense ) => {
+    const { categoryId, amount } = expense;
 
-      acc[expense.categoryId] += expense.amount;
+    if(!acc[categoryId]) {
+      acc[categoryId] = 0;
+    }
 
-      setExpensesByCategory(acc);
-    }, {}); 
-  }, [filteredExpenses]);
+    acc[categoryId] += amount;
+
+    console.log(acc);
+
+    return acc;
+  }, {});
+  
+  const formattedData = Object.keys(totalAmountByCategory).map(categoryId => {
+    return {
+      categoryId: parseInt(categoryId),
+      value: totalAmountByCategory[categoryId]
+    }
+  })
+
+
+  console.log(formattedData);
+
+  
+
 
   return (
     <div className="relative max-w-44 mx-auto mb-6">
@@ -71,7 +82,7 @@ const SpendingChart: React.FC<SpendingChartProps> = ({period, filteredExpenses})
           : 
           <>
             <PieChart width={160} height={160} className="flex" >
-              <Pie data={data} cx="50%" cy="50%" innerRadius={50} outerRadius={75} paddingAngle={5} dataKey="value" isAnimationActive={false}>
+              <Pie data={formattedData} cx="50%" cy="50%" innerRadius={50} outerRadius={75} paddingAngle={5} dataKey="amount" isAnimationActive={false}>
               <Label value="You have spent" position="center" fontSize="8" fontWeight="bold" className="-translate-y-5" /> 
               <Label value={`$${expenseTotal}`} position="center" fontSize="20" fontWeight="bold" /> 
               <Label value={`this ${period}`} position="center" fontSize="8" offset={0} fontWeight="bold" className="translate-y-5" /> 
